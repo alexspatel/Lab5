@@ -23,7 +23,8 @@ bool is_valid(string expr, string left, string right);
 int main()
 {
 
-	is_valid("(awesome{sauce})","{(", "})" );
+	is_valid( "{x * [y * (z + <a,b>*<c,d>) - (e^k)] - phi}(_m_)", "([{<", ")]}>" );
+
 	system("pause");
 
 	return 0;
@@ -31,67 +32,76 @@ int main()
 
 bool is_valid(string expr, string left, string right)
 {
-	stack<char> store;		// stack to store the left delimiter
-	string::size_type i;	// An index into the string 
-	char next;				// The next character from the string
+	stack<char> store;			// stack to store the left delimiter
+	int size = expr.length();	// length of expr
 
-	cout << "expression: " << expr << endl;
-	cout << "left delimiter: " << left << endl;
-	cout << "right delimiter: " << right << endl;
-	
-	// Loop through the left delimiters
-	cout << "left delimiters" << endl;
-	for( i = 0; i < left.length(); ++i )
+	// INITIAL CONDITION CHECK
+	// if either the left and right delimiters are NULL, or expr is NULL, return true.
+	if( ( left == "" && right == "" ) || expr == "" )
 	{
-		next = left[i];
-		store.push(next);		// push next onto the stack	
-		cout << "pushed: " << next << endl;
+		return true;
+	}
+	
+	// LEFT DELIMITER
+	// Loop through the left delimiters, push each char to the stack
+	for( int i = 0; i < left.length(); i++ )
+	{
+		store.push(left[i]); // push each character in the string left to the stack
+		cout << "pushed: " << left[i] << endl;
 	}
 
-	// Loop through the expression, evaluate left delimiters
-	for( i = 0; i < expr.length(); i++ )
+	// Loop through the expression, pop off a char if the char matches the top char in the stack
+	for( int i = size - 1; i >= 0; i-- )
 	{
-		next = expr[i];
-		if( next == store.top() ) // if the top of the stack contains the same character as expr
+		if( store.empty() )
 		{
-			cout << "pop off : " << store.top() << endl;
-			store.pop(); // pop off the top item in the stack
-		}
-		else
-		{
-			cout << "invalid delimiter: " << next << endl;
+			cout << "failed" << endl;
 			return false;
 		}
+		else if( expr[i] == store.top() )
+		{
+			store.pop(); // pop off the top value
+			cout << "popped: " << expr[i] << endl;
+		}
 	}
 
-	
-	// Loop through the expression, evaluate right delimiters
-	cout << "right delimiters" << endl;
-	int sizeR = expr.length() - right.length();
-	for( int j = expr.length() - 1; j >= sizeR; j-- )
+	if( !store.empty() ) // if the stack is not empty, return false
 	{
-		next = expr[j];
-		store.push(next);
-		cout << "pushed: " << next << endl;
+		cout << "stack not empty" << endl;
+		return false;
 	}
 
-	// Loop through the right delimiters
+	cout << "end left, start right" << endl;
+
+	// RIGHT DELIMITERS
+	// Loop through the right delimiters, push each char to the stack
 	for( int i = 0; i < right.length(); i++ )
 	{
-		next = right[i];
-		if( next == store.top() ) // if the top of the stack contains the same character as right
+		store.push(right[i]); // push each char in right onto the stack
+		cout << "pushed: " << right[i] << endl;
+	}
+
+	// Loop through expr, look for right delimiters
+	for( int i = 0; i < expr.length(); i++ )
+	{
+		if( store.empty() )
 		{
-			cout << "pop off: " << store.top() << endl;
-			store.pop(); // pop off the top item in the stack
-		}
-		else
-		{
-			cout << "invalid delimiter: " << next << endl;
+			cout << "failed" << endl;
 			return false;
+		}
+		else if( expr[i] == store.top() )
+		{
+			store.pop(); // pop off the top value
+			cout << "popped: " << expr[i] << endl;
 		}
 	}
 
+	if( !store.empty() ) // if the stack is not empty, return false
+	{
+		cout << "stack not empty" << endl;
+		return false;
+	}
 
-	cout << "valid!" << endl;
+	cout << "passed" << endl;
 	return true;
 }
