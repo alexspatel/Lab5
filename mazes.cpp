@@ -47,6 +47,7 @@
 using namespace std;
 
 queue <string> store;
+stack <char> trail;
 
 
 // FUNCTION PROTOTYPE
@@ -85,39 +86,52 @@ bool has_solution(vector<string> maze)
 	}
 	cout << endl;
 
-	int start_row;
-	int finish;
-	int col = 0;
+	int start_row = 0;  // position of the starting row
+	int start_col = 0;  // position of the starting column
+	int finish_row = 0;	// position of the finishing row
+	int finish_col = 0;	// position of the finishing column
+	int col = 0;		// variable to count the number of columns
 	int i;
-	string row;
+	string row = maze[0]; // row equals the first row maze[]
 
-	// LOOP THROUGH THE ROWS IN THE QUEUE
+
+	// LOOP THROUGH THE ROWS IN THE QUEUE, FIND THE START
 	for( i = 0; i < maze.size(); i++ )
 	{
 		row = maze[i];
-
-		if( row[i] == 'o' )
+		//cout << "row " << i << " " << endl;
+		for( int j = 0; j < row.length(); j++ )
 		{
-			start_row = i;
-			cout << "start row: " << start_row << endl;
-			cout << "start col: " << col << endl;
+			//cout << "row[" << j << "]: " << row[j] << ", 
+			if( row[i] == 'o' )
+			{
+				start_row = i;
+				cout << "start row: " << start_row << endl;
+				cout << "start col: " << col << endl;
+				goto next; // break the loop
+			}
 		}
-		
+
+				
 		col++; // increment the number of the column
 	}
 
+next:
 
-	if( row[i] == '*' )
+	start_col = col;
+	// START FROM 'o' AND FIND A '.'
+	for( int k = start_row; k < maze.size(); k++ )
 	{
-		finish = i;
-		cout << finish << endl;
-	}
-	else if( row[i] == '.' )
-	{
-		row[i] = 'X'; // Mark a trail
-		cout << row[i] << endl;
+		row = maze[k];
+		for( int l = start_col; l < col; l++ )
+		{
+			if( row[l] == '.' )
+			{
+				cout << "go there" << endl;
+			}
+		}
 	}
 
-
+	
 	return true; 
 }
