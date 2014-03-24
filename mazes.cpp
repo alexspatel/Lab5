@@ -110,9 +110,7 @@ bool has_solution(vector<string> maze)
 				cout << "start col: " << col << endl;
 				goto next; // break the loop
 			}
-		}
-
-				
+		}				
 		col++; // increment the number of the column
 	}
 
@@ -123,12 +121,26 @@ next:
 	for( int k = start_row; k < maze.size(); k++ )
 	{
 		row = maze[k];
-		for( int l = start_col; l < col; l++ )
+		cout << row << endl;
+		for( int l = 0; l < row.size(); l++ )
 		{
 			if( row[l] == '.' )
 			{
 				cout << "go there" << endl;
+				char temp = row[l];
+				row[l] = 'X';
+				trail.push(temp);
+				cout << "pushed: " << trail.top() << endl;
 			}
+			else if( row[l] == '*' )
+			{
+				cout << "finish!" << endl;
+				return true;
+			}
+		}
+		if( k = maze.size() - 1 )
+		{
+			return false;
 		}
 	}
 
