@@ -50,68 +50,73 @@ queue <string> store;
 
 
 // FUNCTION PROTOTYPE
-//bool has_solution(vector<string>);
+bool has_solution(vector<string>);
 
-//int main()
-//{
-//
-//	vector <string> maze;
-//	maze.push_back("#####");
-//	maze.push_back("#o.*#");
-//	maze.push_back("#####");
-//	/*string mazes[] =
-//	{"#####",
-//	 "#o.*#",
-//	 "#####"};*/
-//
-//	has_solution(maze);
-//
-//	
-//
-//	system("pause");
-//
-//	return 0;
-//}
+int main()
+{
+
+	vector <string> maze;
+	maze.push_back("#####");
+	maze.push_back("#o.*#");
+	maze.push_back("#####");
+	/*string mazes[] =
+	{"#####",
+	 "#o.*#",
+	 "#####"};*/
+
+	has_solution(maze);
+
+	
+
+	system("pause");
+
+	return 0;
+}
 
 
 
 bool has_solution(vector<string> maze) 
 {
-
 	// ENQUEUE EACH ROW TO THE QUEUE
 	for( int i = 0; i < maze.size(); i++ )
 	{
 		store.push(maze[i]); // enqueue each element of maze to the queue
-		cout << "enque: " << maze.back() << " ";
+		cout << "enque: " << maze[i] << endl;
 	}
 	cout << endl;
 
-	int start;
+	int start_row;
 	int finish;
+	int col = 0;
+	int i;
+	string row;
 
 	// LOOP THROUGH THE ROWS IN THE QUEUE
-	for( int i = 0; i < maze.size(); i++ )
+	for( i = 0; i < maze.size(); i++ )
 	{
-		string row = maze[i];
-		cout << row[i] << endl;
+		row = maze[i];
 
 		if( row[i] == 'o' )
 		{
-			start = i;
-			cout << "start: " << start << endl;
+			start_row = i;
+			cout << "start row: " << start_row << endl;
+			cout << "start col: " << col << endl;
 		}
-		else if( row[i] == '*' )
-		{
-			finish = i;
-			cout << finish << endl;
-		}
-		else if( row[i] == '.' )
-		{
-			row[i] = 'X'; // Mark a trail
-			cout << row[i] << endl;
-		}
+		
+		col++; // increment the number of the column
 	}
 
+
+	if( row[i] == '*' )
+	{
+		finish = i;
+		cout << finish << endl;
+	}
+	else if( row[i] == '.' )
+	{
+		row[i] = 'X'; // Mark a trail
+		cout << row[i] << endl;
+	}
 
 
 	return true; 
